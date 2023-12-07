@@ -7,22 +7,11 @@ CORS(app)
 
 @app.route('/convert-to-pdf', methods=['POST'])
 def convert_to_pdf():
-    # Check if a file is part of the request
-    if 'html_file' not in request.files:
-        return jsonify({'error': 'No file part'}), 400
-
-    file = request.files['html_file']
+    html_content = request.form.get('html_content')
 
     try:
-        # Read HTML content from the file and decode it
-        html_content = file.read().decode('utf-8')
-        options = {
-            'enable-local-file-access': '',
-        }
-        
-
         # Convert HTML to PDF
-        pdf_data = pdfkit.from_string(html_content, False, options=options)
+        pdf_data = pdfkit.from_string(html_content, False)
         return pdf_data, 200, {'Content-Type': 'application/pdf'}
     except Exception as e:
         # Log the error
