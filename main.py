@@ -14,8 +14,8 @@ def convert_to_pdf():
     file = request.files['html_file']
 
     try:
-        # Read HTML content from the file
-        html_content = file.read()
+        # Read HTML content from the file and decode it
+        html_content = file.read().decode('utf-8')
 
         # Convert HTML to PDF
         pdf_data = pdfkit.from_string(html_content, False)
