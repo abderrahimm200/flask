@@ -1,13 +1,24 @@
-from flask import Flask, jsonify
-import os
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import pdfkit
 
 app = Flask(__name__)
+CORS(app)
 
+@app.route('/convert-to-pdf', methods=['POST'])
+def convert_to_pdf():
+    html_content = request.form.get('html_content')
 
-@app.route('/')
-def index():
-    return jsonify({"Choo Choo": "Welcome to your Flask app 🚅"})
+    try:
+        # Convert HTML to PDF
+        pdf_data = pdfkit.from_string(html_content, False)
+        return pdf_data, 200, {'Content-Type': 'application/pdf'}
+    except Exception as e:
+        # Log the error
+        app.logger.error(f'wkhtmltopdf error: {str(e)}')
 
+        # Return an error message
+        return jsonify({'error': 'Internal server error. Please check the logs for details.'}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, port=os.getenv("PORT", default=5000))
+    app.run(debug=True)
