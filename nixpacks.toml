@@ -1,2 +1,2 @@
 [phases.setup]
-nixPkgs = ["...", "wkhtmltopdf-bin"]
+nixPkgs = ["...", "wkhtmltopdf-bin", "fontconfig"]
