@@ -16,9 +16,13 @@ def convert_to_pdf():
     try:
         # Read HTML content from the file and decode it
         html_content = file.read().decode('utf-8')
+        options = {
+            'enable-local-file-access': '',
+        }
+        
 
         # Convert HTML to PDF
-        pdf_data = pdfkit.from_string(html_content, False)
+        pdf_data = pdfkit.from_string(html_content, False, options=options)
         return pdf_data, 200, {'Content-Type': 'application/pdf'}
     except Exception as e:
         # Log the error
