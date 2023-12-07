@@ -10,11 +10,14 @@ def convert_to_pdf():
     html_content = request.form.get('html_content')
 
     try:
-        # Ensure the HTML is interpreted as UTF-8
-        html_content = html_content.encode('utf-8').decode('utf-8')
-
+        options = {
+            'encoding': "UTF-8",
+            'custom-header' : [
+                ('Accept-Encoding', 'gzip')
+            ]
+        }
         # Convert HTML to PDF
-        pdf_data = pdfkit.from_string(html_content, False)
+        pdf_data = pdfkit.from_string(html_content, False, options=options)
         return pdf_data, 200, {'Content-Type': 'application/pdf; charset=UTF-8'}
     except Exception as e:
         # Log the error
